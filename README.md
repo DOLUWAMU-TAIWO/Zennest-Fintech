@@ -1,6 +1,6 @@
 # Payment Service (Spring Boot, Paystack, GraphQL, Docker)
 
-This service handles **payment initialization**, **verification**, and **Paystack webhook processing** for donations or transactions.
+This service handles **payment initialization**, **verification**, **Paystack webhook processing**, and **bank account resolution** for donations or transactions.
 It uses **Spring Boot 3**, **PostgreSQL**, **Docker Compose**, **Prometheus metrics**, and **GitHub Actions** for CI/CD.
 
 ---
@@ -9,6 +9,7 @@ It uses **Spring Boot 3**, **PostgreSQL**, **Docker Compose**, **Prometheus metr
 - **Secure API Key Authentication** using a custom `ApiKeyFilter`
 - **Initialize payments** for users (members) via Paystack
 - **Verify payments** manually or via **automatic webhook**
+- **Bank endpoints** for listing banks and resolving account details
 - **Full GraphQL API** for retrieving and managing payments
 - **Detailed metrics** (payment counts, verification timings, webhook processing)
 - **Production-grade** Dockerfile with multistage build, healthchecks
@@ -40,6 +41,8 @@ It uses **Spring Boot 3**, **PostgreSQL**, **Docker Compose**, **Prometheus metr
 | GET | `/api/payments/verify/{reference}` | Verify a payment manually |
 | POST | `/api/payments/webhook` | Receive Paystack webhooks securely |
 | GET | `/api/payments/health` | Healthcheck endpoint |
+| GET | `/api/payment/banks` | List all supported banks |
+| POST | `/api/payment/payout-profile/resolve` | Resolve a bank account (requires account number and bank code) |
 
 ## GraphQL Endpoints
 | Type | Path |

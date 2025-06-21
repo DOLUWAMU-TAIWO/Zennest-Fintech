@@ -1,0 +1,59 @@
+scalar LocalDateTime
+
+enum PaymentStatus {
+    PENDING
+    SUCCESS
+    FAILED
+}
+
+enum PaystackConfirmationStatus {
+    UNCONFIRMED
+    CONFIRMED
+    FAILED
+}
+
+type Payment {
+    id: ID!
+    email: String!
+    amount: Int!
+    status: PaymentStatus!
+    userId: ID
+    reference: String
+    paystackTransactionId: String
+    gatewayResponse: String
+    paidAt: LocalDateTime
+    channel: String
+    currency: String
+    fees: Int
+    paystackConfirmation: PaystackConfirmationStatus!
+    createdAt: LocalDateTime!
+    updatedAt: LocalDateTime!
+}
+
+type VerificationResponse {
+    status: String!
+    message: String!
+}
+
+input MemberDonationRequest {
+    email: String!
+    amount: Int!
+}
+
+type MemberDonationResponse {
+    paymentId: ID!
+    authorizationUrl: String!
+}
+
+type Query {
+    getPaymentById(id: ID!): Payment
+    getPaymentByReference(reference: String!): Payment
+    getAllPayments: [Payment]
+    getPaymentsByStatus(status: PaymentStatus!): [Payment]
+    countPaymentsByStatus(status: PaymentStatus!): Int
+}
+
+type Mutation {
+    createMemberDonation(request: MemberDonationRequest!): MemberDonationResponse!
+    verifyDonationPayment(reference: String!): VerificationResponse!
+}
